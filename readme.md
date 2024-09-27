@@ -90,15 +90,15 @@ The following are the URLs where you can access the API and the Swagger document
 - **Response:** Created task object.
 
 ### Get All Tasks
-- **Endpoint:** `GET /tasks`
+- **Endpoint:** `GET /task`
 - **Response:** List of all tasks for the authenticated user.
 
 ### Get a Task by ID
-- **Endpoint:** `GET /tasks/{id}`
+- **Endpoint:** `GET /task/{id}`
 - **Response:** Task object with the specified ID.
 
 ### Update a Task
-- **Endpoint:** `PUT /tasks/{id}`
+- **Endpoint:** `PUT /task/{id}`
 - **Request Body:**
     ```json
     {
@@ -110,7 +110,7 @@ The following are the URLs where you can access the API and the Swagger document
 - **Response:** Updated task object.
 
 ### Delete a Task
-- **Endpoint:** `DELETE /tasks/{id}`
+- **Endpoint:** `DELETE /task/{id}`
 - **Response:** Confirmation of task deletion.
 
 ### Mark Multiple Tasks as Done
