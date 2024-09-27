@@ -37,11 +37,11 @@ func (a *API) Init(r *mux.Router) {
 	r.HandleFunc("/login", config.MiddlewareHandler(usernewapi.Login, false)).Methods(http.MethodPost)
 
 	tasknewapi := taskapi.New(a.App)
-	r.HandleFunc("/task", config.MiddlewareHandler(tasknewapi.TaskCreate, true)).Methods(http.MethodPost)               // Create task
-	r.HandleFunc("/task", config.MiddlewareHandler(tasknewapi.TaskList, true)).Methods(http.MethodGet)                  // List tasks
-	r.HandleFunc("/task/{id}", config.MiddlewareHandler(tasknewapi.TaskRead, true)).Methods(http.MethodGet)             // Read task by ID
-	r.HandleFunc("/task/{id}", config.MiddlewareHandler(tasknewapi.TaskUpdate, true)).Methods(http.MethodPut)           // Update task by ID
-	r.HandleFunc("/task/{id}", config.MiddlewareHandler(tasknewapi.TaskDelete, true)).Methods(http.MethodDelete)        // Delete task by ID
-	r.HandleFunc("/task/mark-done", config.MiddlewareHandler(tasknewapi.MarkTasksAsDone, true)).Methods(http.MethodPut) // Mark multiple task done
+	r.HandleFunc("/task", config.MiddlewareHandler(tasknewapi.TaskCreate, true)).Methods(http.MethodPost)                // Create task
+	r.HandleFunc("/task", config.MiddlewareHandler(tasknewapi.TaskList, true)).Methods(http.MethodGet)                   // List tasks
+	r.HandleFunc("/task/{id}", config.MiddlewareHandler(tasknewapi.TaskRead, true)).Methods(http.MethodGet)              // Read task by ID
+	r.HandleFunc("/task/{id}", config.MiddlewareHandler(tasknewapi.TaskUpdate, true)).Methods(http.MethodPut)            // Update task by ID
+	r.HandleFunc("/task/{id}", config.MiddlewareHandler(tasknewapi.TaskDelete, true)).Methods(http.MethodDelete)         // Delete task by ID
+	r.HandleFunc("/tasks/mark-done", config.MiddlewareHandler(tasknewapi.MarkTasksAsDone, true)).Methods(http.MethodPut) // Mark multiple task done
 
 }

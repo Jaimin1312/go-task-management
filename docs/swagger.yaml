@@ -3,16 +3,50 @@ definitions:
   model.LoginRequest:
     properties:
       email:
+        example: test@gmail.com
         type: string
       password:
+        example: test
         type: string
+    type: object
+  model.LoginResponse:
+    properties:
+      data:
+        properties:
+          token:
+            example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2NmY1ODY1NjhiYTAxYjBkOGQ4MzFjMjUiLCJleHAiOjUxNjc2MzY4NzB9.s4U-8Hl6s3hTr0n0Zb9FbYLEGCwO4k5pL5trZxd6AeI
+            type: string
+        type: object
+      message:
+        example: user login successfully
+        type: string
+      status:
+        example: 1
+        type: integer
     type: object
   model.MarkDoneRequest:
     properties:
       task_ids:
+        example:
+        - 60d5ec49c6d8c06e1f20c5a8
         items:
           type: string
         type: array
+    type: object
+  model.MarkTasksAsDoneResponse:
+    properties:
+      data:
+        example:
+        - Task 60d5ec49c6d8c06e1f20c5a8 marked as done.
+        items:
+          type: string
+        type: array
+      message:
+        example: Tasks processed.
+        type: string
+      status:
+        example: 1
+        type: integer
     type: object
   model.RegisterRequest:
     properties:
@@ -26,43 +60,151 @@ definitions:
         example: test
         type: string
     type: object
+  model.RegisterResponse:
+    properties:
+      data:
+        example: "null"
+        type: string
+      message:
+        example: user register successfully
+        type: string
+      status:
+        example: 1
+        type: integer
+    type: object
+  model.ServerError401:
+    properties:
+      data:
+        example: "null"
+        type: string
+      message:
+        example: Unauthorized access
+        type: string
+      status:
+        example: 0
+        type: integer
+    type: object
+  model.ServerError500:
+    properties:
+      data:
+        example: "null"
+        type: string
+      message:
+        example: internal server error
+        type: string
+      status:
+        example: 0
+        type: integer
+    type: object
   model.Task:
     properties:
       createdAt:
+        example: "2024-09-27T14:09:53.259915568+05:30"
         type: string
       description:
+        example: task description
         type: string
       id:
+        example: 60d5ec49c6d8c06e1f20c5a8
         type: string
       status:
         description: '"todo", "in progress", "done"'
+        example: todo / in progress / done
         type: string
       title:
+        example: task title
         type: string
       userID:
+        example: 667bd3d9df5113761db9b247
         type: string
     type: object
   model.TaskCreateRequest:
     properties:
       description:
+        example: task description
         type: string
       status:
         description: '"todo", "in progress", "done"'
+        example: todo / in progress / done
         type: string
       title:
+        example: task title
         type: string
+    type: object
+  model.TaskCreateResponse:
+    properties:
+      data:
+        example: 60d5ec49c6d8c06e1f20c5a8
+        type: string
+      message:
+        example: Task created successfully.
+        type: string
+      status:
+        example: 1
+        type: integer
+    type: object
+  model.TaskDeleteResponse:
+    properties:
+      data:
+        example: "null"
+        type: string
+      message:
+        example: Task deleted successfully
+        type: string
+      status:
+        example: 1
+        type: integer
+    type: object
+  model.TaskListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Task'
+        type: array
+      message:
+        example: Task list retrieved successfully.
+        type: string
+      status:
+        example: 1
+        type: integer
+    type: object
+  model.TaskReadResponse:
+    properties:
+      data:
+        $ref: '#/definitions/model.Task'
+      message:
+        example: Task retrieved successfully.
+        type: string
+      status:
+        example: 1
+        type: integer
     type: object
   model.TaskUpdateRequest:
     properties:
       description:
         description: Description of the task
+        example: task description
         type: string
       status:
         description: Status of the task  "todo", "in progress", "done"
+        example: todo / in progress / done
         type: string
       title:
         description: Title of the task
+        example: task title
         type: string
+    type: object
+  model.TaskUpdateResponse:
+    properties:
+      data:
+        example: "null"
+        type: string
+      message:
+        example: Task updated successfully
+        type: string
+      status:
+        example: 1
+        type: integer
     type: object
   util.Response:
     properties:
@@ -98,7 +240,11 @@ paths:
           $ref: '#/definitions/model.LoginRequest'
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: user login successfully
+          schema:
+            $ref: '#/definitions/model.LoginResponse'
       summary: user login
       tags:
       - User
@@ -114,7 +260,11 @@ paths:
           $ref: '#/definitions/model.RegisterRequest'
       produces:
       - application/json
-      responses: {}
+      responses:
+        "201":
+          description: user register successfully
+          schema:
+            $ref: '#/definitions/model.RegisterResponse'
       summary: user registration
       tags:
       - User
@@ -151,25 +301,17 @@ paths:
       - application/json
       responses:
         "200":
-          description: Task list retrieved successfully
+          description: Task created successfully
           schema:
-            allOf:
-            - $ref: '#/definitions/util.Response'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/model.Task'
-                  type: array
-              type: object
+            $ref: '#/definitions/model.TaskListResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ServerError401'
         "500":
-          description: Internal server error
+          description: Internal Server Error
           schema:
-            allOf:
-            - $ref: '#/definitions/util.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
+            $ref: '#/definitions/model.ServerError500'
       summary: List all tasks
       tags:
       - Task
@@ -190,37 +332,18 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
+        "201":
           description: Task created successfully
           schema:
-            allOf:
-            - $ref: '#/definitions/util.Response'
-            - properties:
-                data:
-                  type: string
-                message:
-                  type: string
-                status:
-                  type: integer
-              type: object
-        "400":
-          description: Bad request
+            $ref: '#/definitions/model.TaskCreateResponse'
+        "401":
+          description: Unauthorized
           schema:
-            allOf:
-            - $ref: '#/definitions/util.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
+            $ref: '#/definitions/model.ServerError401'
         "500":
-          description: Internal server error
+          description: Internal Server Error
           schema:
-            allOf:
-            - $ref: '#/definitions/util.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
+            $ref: '#/definitions/model.ServerError500'
       summary: Create a task
       tags:
       - Task
@@ -244,30 +367,15 @@ paths:
         "200":
           description: Task deleted successfully
           schema:
-            allOf:
-            - $ref: '#/definitions/util.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
-        "404":
-          description: Task not found
+            $ref: '#/definitions/model.TaskDeleteResponse'
+        "401":
+          description: Unauthorized
           schema:
-            allOf:
-            - $ref: '#/definitions/util.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
+            $ref: '#/definitions/model.ServerError401'
         "500":
-          description: Internal server error
+          description: Internal Server Error
           schema:
-            allOf:
-            - $ref: '#/definitions/util.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
+            $ref: '#/definitions/model.ServerError500'
       summary: Delete a task by ID
       tags:
       - Task
@@ -288,32 +396,17 @@ paths:
       - application/json
       responses:
         "200":
-          description: Task retrieved successfully
+          description: Task created successfully
           schema:
-            allOf:
-            - $ref: '#/definitions/util.Response'
-            - properties:
-                data:
-                  $ref: '#/definitions/model.Task'
-              type: object
-        "404":
-          description: Task not found
+            $ref: '#/definitions/model.TaskReadResponse'
+        "401":
+          description: Unauthorized
           schema:
-            allOf:
-            - $ref: '#/definitions/util.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
+            $ref: '#/definitions/model.ServerError401'
         "500":
-          description: Internal server error
+          description: Internal Server Error
           schema:
-            allOf:
-            - $ref: '#/definitions/util.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
+            $ref: '#/definitions/model.ServerError500'
       summary: Retrieve a task by ID
       tags:
       - Task
@@ -342,12 +435,7 @@ paths:
         "200":
           description: Task updated successfully
           schema:
-            allOf:
-            - $ref: '#/definitions/util.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
+            $ref: '#/definitions/model.TaskUpdateResponse'
         "400":
           description: Bad request
           schema:
@@ -357,24 +445,14 @@ paths:
                 data:
                   type: string
               type: object
-        "404":
-          description: Task not found
+        "401":
+          description: Unauthorized
           schema:
-            allOf:
-            - $ref: '#/definitions/util.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
+            $ref: '#/definitions/model.ServerError401'
         "500":
-          description: Internal server error
+          description: Internal Server Error
           schema:
-            allOf:
-            - $ref: '#/definitions/util.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
+            $ref: '#/definitions/model.ServerError500'
       summary: Update a task by ID
       tags:
       - Task
@@ -399,16 +477,7 @@ paths:
         "200":
           description: Tasks marked as done successfully
           schema:
-            allOf:
-            - $ref: '#/definitions/util.Response'
-            - properties:
-                data:
-                  type: string
-                message:
-                  type: string
-                status:
-                  type: integer
-              type: object
+            $ref: '#/definitions/model.MarkTasksAsDoneResponse'
         "400":
           description: Bad request
           schema:
@@ -418,15 +487,14 @@ paths:
                 data:
                   type: string
               type: object
-        "500":
-          description: Internal server error
+        "401":
+          description: Unauthorized
           schema:
-            allOf:
-            - $ref: '#/definitions/util.Response'
-            - properties:
-                data:
-                  type: string
-              type: object
+            $ref: '#/definitions/model.ServerError401'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ServerError500'
       summary: Mark multiple tasks as done
       tags:
       - Task

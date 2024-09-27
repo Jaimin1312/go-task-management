@@ -46,7 +46,14 @@ const docTemplate = `{
                         }
                     }
                 ],
-                "responses": {}
+                "responses": {
+                    "200": {
+                        "description": "user login successfully",
+                        "schema": {
+                            "$ref": "#/definitions/model.LoginResponse"
+                        }
+                    }
+                }
             }
         },
         "/register": {
@@ -70,7 +77,14 @@ const docTemplate = `{
                         }
                     }
                 ],
-                "responses": {}
+                "responses": {
+                    "201": {
+                        "description": "user register successfully",
+                        "schema": {
+                            "$ref": "#/definitions/model.RegisterResponse"
+                        }
+                    }
+                }
             }
         },
         "/task": {
@@ -124,42 +138,21 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Task list retrieved successfully",
+                        "description": "Task created successfully",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/util.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.Task"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/model.TaskListResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/model.ServerError401"
                         }
                     },
                     "500": {
-                        "description": "Internal server error",
+                        "description": "Internal Server Error",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/util.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/model.ServerError500"
                         }
                     }
                 }
@@ -192,64 +185,22 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "Task created successfully",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/util.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "status": {
-                                            "type": "integer"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/model.TaskCreateResponse"
                         }
                     },
-                    "400": {
-                        "description": "Bad request",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/util.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/model.ServerError401"
                         }
                     },
                     "500": {
-                        "description": "Internal server error",
+                        "description": "Internal Server Error",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/util.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/model.ServerError500"
                         }
                     }
                 }
@@ -283,57 +234,21 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Task retrieved successfully",
+                        "description": "Task created successfully",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/util.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/model.Task"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/model.TaskReadResponse"
                         }
                     },
-                    "404": {
-                        "description": "Task not found",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/util.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/model.ServerError401"
                         }
                     },
                     "500": {
-                        "description": "Internal server error",
+                        "description": "Internal Server Error",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/util.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/model.ServerError500"
                         }
                     }
                 }
@@ -376,19 +291,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Task updated successfully",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/util.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/model.TaskUpdateResponse"
                         }
                     },
                     "400": {
@@ -409,40 +312,16 @@ const docTemplate = `{
                             ]
                         }
                     },
-                    "404": {
-                        "description": "Task not found",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/util.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/model.ServerError401"
                         }
                     },
                     "500": {
-                        "description": "Internal server error",
+                        "description": "Internal Server Error",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/util.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/model.ServerError500"
                         }
                     }
                 }
@@ -476,55 +355,19 @@ const docTemplate = `{
                     "200": {
                         "description": "Task deleted successfully",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/util.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/model.TaskDeleteResponse"
                         }
                     },
-                    "404": {
-                        "description": "Task not found",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/util.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/model.ServerError401"
                         }
                     },
                     "500": {
-                        "description": "Internal server error",
+                        "description": "Internal Server Error",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/util.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/model.ServerError500"
                         }
                     }
                 }
@@ -562,25 +405,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Tasks marked as done successfully",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/util.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "status": {
-                                            "type": "integer"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/model.MarkTasksAsDoneResponse"
                         }
                     },
                     "400": {
@@ -601,22 +426,16 @@ const docTemplate = `{
                             ]
                         }
                     },
-                    "500": {
-                        "description": "Internal server error",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/util.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/model.ServerError401"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ServerError500"
                         }
                     }
                 }
@@ -628,10 +447,34 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "test@gmail.com"
                 },
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "test"
+                }
+            }
+        },
+        "model.LoginResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "token": {
+                            "type": "string",
+                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2NmY1ODY1NjhiYTAxYjBkOGQ4MzFjMjUiLCJleHAiOjUxNjc2MzY4NzB9.s4U-8Hl6s3hTr0n0Zb9FbYLEGCwO4k5pL5trZxd6AeI"
+                        }
+                    }
+                },
+                "message": {
+                    "type": "string",
+                    "example": "user login successfully"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -642,7 +485,32 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "example": [
+                        "60d5ec49c6d8c06e1f20c5a8"
+                    ]
+                }
+            }
+        },
+        "model.MarkTasksAsDoneResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "Task 60d5ec49c6d8c06e1f20c5a8 marked as done."
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Tasks processed."
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -663,27 +531,84 @@ const docTemplate = `{
                 }
             }
         },
+        "model.RegisterResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string",
+                    "example": "null"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "user register successfully"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "model.ServerError401": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string",
+                    "example": "null"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Unauthorized access"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 0
+                }
+            }
+        },
+        "model.ServerError500": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string",
+                    "example": "null"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "internal server error"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 0
+                }
+            }
+        },
         "model.Task": {
             "type": "object",
             "properties": {
                 "createdAt": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2024-09-27T14:09:53.259915568+05:30"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "task description"
                 },
                 "id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "60d5ec49c6d8c06e1f20c5a8"
                 },
                 "status": {
                     "description": "\"todo\", \"in progress\", \"done\"",
-                    "type": "string"
+                    "type": "string",
+                    "example": "todo / in progress / done"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "task title"
                 },
                 "userID": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "667bd3d9df5113761db9b247"
                 }
             }
         },
@@ -691,14 +616,86 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "task description"
                 },
                 "status": {
                     "description": "\"todo\", \"in progress\", \"done\"",
-                    "type": "string"
+                    "type": "string",
+                    "example": "todo / in progress / done"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "task title"
+                }
+            }
+        },
+        "model.TaskCreateResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string",
+                    "example": "60d5ec49c6d8c06e1f20c5a8"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Task created successfully."
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "model.TaskDeleteResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string",
+                    "example": "null"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Task deleted successfully"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "model.TaskListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Task"
+                    }
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Task list retrieved successfully."
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "model.TaskReadResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/model.Task"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Task retrieved successfully."
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -707,15 +704,35 @@ const docTemplate = `{
             "properties": {
                 "description": {
                     "description": "Description of the task",
-                    "type": "string"
+                    "type": "string",
+                    "example": "task description"
                 },
                 "status": {
                     "description": "Status of the task  \"todo\", \"in progress\", \"done\"",
-                    "type": "string"
+                    "type": "string",
+                    "example": "todo / in progress / done"
                 },
                 "title": {
                     "description": "Title of the task",
-                    "type": "string"
+                    "type": "string",
+                    "example": "task title"
+                }
+            }
+        },
+        "model.TaskUpdateResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string",
+                    "example": "null"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Task updated successfully"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },

@@ -27,19 +27,19 @@ func init() {
 	log.Println("Configuration loaded successfully")
 }
 
-// @title Task management api
-// @version 1.0
-// @description Task management server.
+// @title          Task management api
+// @version        1.0
+// @description    Task management server.
 // @termsOfService http://swagger.io/terms/
 
-// @contact.name API Support
-// @contact.url http://www.swagger.io/support
+// @contact.name  API Support
+// @contact.url   http://www.swagger.io/support
 // @contact.email support@swagger.io
 
 // @license.name Apache 2.0
-// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+// @license.url  http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host 127.0.0.1:8082
+// @host     127.0.0.1:8082
 // @BasePath /task-service
 func main() {
 	// Initialize the App instance with MongoDB connection

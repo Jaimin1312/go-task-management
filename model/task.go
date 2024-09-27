@@ -8,25 +8,25 @@ import (
 )
 
 type Task struct {
-	ID          primitive.ObjectID `bson:"_id" json:"id"`
-	Title       string             `bson:"title" json:"title"`
-	Description string             `bson:"description" json:"description"`
-	Status      string             `bson:"status" json:"status"` // "todo", "in progress", "done"
-	CreatedAt   time.Time          `bson:"createdAt" json:"createdAt"`
-	UserID      string             `bson:"userID" json:"userID"`
+	ID          primitive.ObjectID `bson:"_id" json:"id" example:"60d5ec49c6d8c06e1f20c5a8"`
+	Title       string             `bson:"title" json:"title" example:"task title"`
+	Description string             `bson:"description" json:"description"  example:"task description"`
+	Status      string             `bson:"status" json:"status" example:"todo / in progress / done"` // "todo", "in progress", "done"
+	CreatedAt   time.Time          `bson:"createdAt" json:"createdAt" example:"2024-09-27T14:09:53.259915568+05:30"`
+	UserID      string             `bson:"userID" json:"userID" example:"667bd3d9df5113761db9b247"`
 }
 
 type TaskCreateRequest struct {
-	Title       string `bson:"title" json:"title"`
-	Description string `bson:"description" json:"description"`
-	Status      string `bson:"status" json:"status"` // "todo", "in progress", "done"
+	Title       string `bson:"title" json:"title" example:"task title"`
+	Description string `bson:"description" json:"description" example:"task description"`
+	Status      string `bson:"status" json:"status" example:"todo / in progress / done"` // "todo", "in progress", "done"
 	UserID      string `bson:"userID" json:"-"`
 }
 
 type TaskUpdateRequest struct {
-	Title       string `json:"title"`       // Title of the task
-	Description string `json:"description"` // Description of the task
-	Status      string `json:"status"`      // Status of the task  "todo", "in progress", "done"
+	Title       string `json:"title" example:"task title"`                 // Title of the task
+	Description string `json:"description" example:"task description"`     // Description of the task
+	Status      string `json:"status" example:"todo / in progress / done"` // Status of the task  "todo", "in progress", "done"
 }
 
 // Validate method for TaskCreateRequest
@@ -62,5 +62,5 @@ func validateTask(title, description, status string) error {
 }
 
 type MarkDoneRequest struct {
-	TaskIDs []string `json:"task_ids"`
+	TaskIDs []string `json:"task_ids" example:"60d5ec49c6d8c06e1f20c5a8"`
 }
