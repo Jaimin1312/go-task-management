@@ -78,7 +78,7 @@ The following are the URLs where you can access the API and the Swagger document
 ## Task Management
 
 ### Create a Task
-- **Endpoint:** `POST /tasks`
+- **Endpoint:** `POST /task`
 - **Request Body:**
     ```json
     {
