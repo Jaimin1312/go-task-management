@@ -83,6 +83,7 @@ func serveAPI(api *api.API) {
 	}
 
 	log.Printf("Serving API at http://127.0.0.1:%d", port)
+	log.Printf("Swagger API at http://127.0.0.1:%d/task-service/swagger/index.html#/", port)
 	if err := s.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatalf("Server failed to start: %v", err)
 	}

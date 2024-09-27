@@ -23,16 +23,26 @@ Before running the application, ensure you have the following installed:
     ```bash
     go mod tidy
 
-3. **Set up environment variables: Ensure your MongoDB connection string and other environment variables are set. You can default file**
+3. **Set up environment variables: Ensure your MongoDB connection string and other environment variables are set. You can default.yml file**
+    ```yml
     mongodatabase:
         host: "mongodb://localhost:27017/?retryWrites=true&w=majority&appName=task-management"
         DBName: "task-management"
     server:
         port: 8082
+    ```
 
 Run the application: Start the server with:
 go run main.go
 
+## API Endpoints
+
+The following are the URLs where you can access the API and the Swagger documentation:
+
+```
+    Serving API at http://127.0.0.1:8082/task-service/
+    Swagger API at http://127.0.0.1:8082/task-service/swagger/index.html#/
+```
 
 ## API Endpoints
 
