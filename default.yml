@@ -1,0 +1,5 @@
+mongodatabase:
+  host: "mongodb://localhost:27017/?retryWrites=true&w=majority&appName=task-management"
+  DBName: "task-management"
+server:
+  port: 8082

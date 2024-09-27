@@ -1,0 +1,433 @@
+basePath: /task-service
+definitions:
+  model.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  model.MarkDoneRequest:
+    properties:
+      task_ids:
+        items:
+          type: string
+        type: array
+    type: object
+  model.RegisterRequest:
+    properties:
+      email:
+        example: test@gmail.com
+        type: string
+      name:
+        example: test user
+        type: string
+      password:
+        example: test
+        type: string
+    type: object
+  model.Task:
+    properties:
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      status:
+        description: '"todo", "in progress", "done"'
+        type: string
+      title:
+        type: string
+      userID:
+        type: string
+    type: object
+  model.TaskCreateRequest:
+    properties:
+      description:
+        type: string
+      status:
+        description: '"todo", "in progress", "done"'
+        type: string
+      title:
+        type: string
+    type: object
+  model.TaskUpdateRequest:
+    properties:
+      description:
+        description: Description of the task
+        type: string
+      status:
+        description: Status of the task  "todo", "in progress", "done"
+        type: string
+      title:
+        description: Title of the task
+        type: string
+    type: object
+  util.Response:
+    properties:
+      data: {}
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+host: 127.0.0.1:8082
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: Task management server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Task management api
+  version: "1.0"
+paths:
+  /login:
+    post:
+      description: user login
+      parameters:
+      - description: login request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: user login
+      tags:
+      - User
+  /register:
+    post:
+      description: user registration
+      parameters:
+      - description: register request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.RegisterRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: user registration
+      tags:
+      - User
+  /task:
+    get:
+      description: Retrieve all tasks for a user with optional filters
+      parameters:
+      - description: token value
+        in: header
+        name: auth-token
+        required: true
+        type: string
+      - description: Limit of tasks to retrieve
+        in: query
+        name: limit
+        type: integer
+      - description: Offset for pagination
+        in: query
+        name: offset
+        type: integer
+      - description: Filter by task status
+        in: query
+        name: status
+        type: string
+      - description: Field to sort by
+        in: query
+        name: sort
+        type: string
+      - description: Order of sorting (1 for ascending, -1 for descending)
+        in: query
+        name: sortOrder
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Task list retrieved successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Task'
+                  type: array
+              type: object
+        "500":
+          description: Internal server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: List all tasks
+      tags:
+      - Task
+    post:
+      description: Create a new task for a user
+      parameters:
+      - description: token value
+        in: header
+        name: auth-token
+        required: true
+        type: string
+      - description: Task creation request
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/model.TaskCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Task created successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.Response'
+            - properties:
+                data:
+                  type: string
+                message:
+                  type: string
+                status:
+                  type: integer
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Create a task
+      tags:
+      - Task
+  /task/{id}:
+    delete:
+      description: Remove a task from the system by its ID
+      parameters:
+      - description: token value
+        in: header
+        name: auth-token
+        required: true
+        type: string
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Task deleted successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Task not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Delete a task by ID
+      tags:
+      - Task
+    get:
+      description: Get the details of a task by its ID
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: token value
+        in: header
+        name: auth-token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Task retrieved successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Task'
+              type: object
+        "404":
+          description: Task not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Retrieve a task by ID
+      tags:
+      - Task
+    put:
+      description: Update the details of a task by its ID
+      parameters:
+      - description: token value
+        in: header
+        name: auth-token
+        required: true
+        type: string
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Task update request
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/model.TaskUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Task updated successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Task not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Update a task by ID
+      tags:
+      - Task
+  /tasks/mark-done:
+    put:
+      description: Mark multiple tasks as done for a user
+      parameters:
+      - description: token value
+        in: header
+        name: auth-token
+        required: true
+        type: string
+      - description: Task IDs to mark as done
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/model.MarkDoneRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Tasks marked as done successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.Response'
+            - properties:
+                data:
+                  type: string
+                message:
+                  type: string
+                status:
+                  type: integer
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Mark multiple tasks as done
+      tags:
+      - Task
+swagger: "2.0"
