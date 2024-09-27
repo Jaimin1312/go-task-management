@@ -1,4 +1,4 @@
-# Task Manager REST API
+# Task Management REST API
 
 ## Overview
 
@@ -16,8 +16,8 @@ Before running the application, ensure you have the following installed:
 
 1. **Clone the repository:**
    ```bash
-   git clone <your-repository-url>
-   cd task-manager-api
+   git clone https://github.com/Jaimin1312/go-task-management
+   cd go-task-management
 
 2. **Install dependencies: Use the following command to download and install the necessary Go packages:**
     ```bash
