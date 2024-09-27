@@ -57,6 +57,7 @@ The following are the URLs where you can access the API and the Swagger document
 - **Request Body:**
     ```json
     {
+        "name": "your_name",
         "email": "your_email",
         "password": "your_password"
     }
@@ -83,7 +84,7 @@ The following are the URLs where you can access the API and the Swagger document
     {
         "title": "Task Title",
         "description": "Task Description",
-        "status": "todo"
+        "status": "todo / in progress / done"
     }
     ```
 - **Response:** Created task object.
@@ -103,7 +104,7 @@ The following are the URLs where you can access the API and the Swagger document
     {
         "title": "Updated Task Title",
         "description": "Updated Task Description",
-        "status": "in progress"
+        "status": "todo / in progress / done"
     }
     ```
 - **Response:** Updated task object.
