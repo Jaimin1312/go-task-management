@@ -66,6 +66,10 @@ func (e *AppError) LogWithLocation() *AppError {
 func Respond(w http.ResponseWriter, err error) {
 	if appErr, ok := err.(*AppError); ok {
 		w.WriteHeader(appErr.Code)
+		if appErr.Code == ErrServer.Code {
+			appErr.Message = ErrMsgServer
+		}
+
 		response := util.SetResponse(nil, 0, appErr.Message)
 		json.NewEncoder(w).Encode(response)
 		return
